@@ -1217,7 +1217,7 @@ GovAuction.Створити скаргу про виправлення визн�
 
 Отримати інформацію із тендера
   [Arguments]  ${username}  ${tender_uaid}  ${field_name}
-#  tenderonline.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+#  GovAuction.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${red}=  Evaluate  "\\033[1;31m"
 
   Run Keyword If  'title' in '${field_name}'  Execute Javascript  $("[data-test-id|='title']").css("text-transform", "unset")
@@ -1225,14 +1225,14 @@ GovAuction.Створити скаргу про виправлення визн�
   Run Keyword If  'status' in '${field_name}' and '${mode}' != 'negotiation'  Дочекатися І Клікнути  xpath=//*[contains(@href,"tender/json/")]
 #  Run Keyword And Ignore Error  Click Element  xpath=//button[@data-dismiss="modal"]
   Run Keyword If  '${field_name}' == 'qualificationPeriod.endDate'  Wait Until Keyword Succeeds  10 x  60 s  Run Keywords
-  ...  tenderonline.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ...  GovAuction.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ...  AND  Page Should Contain Element  xpath=//*[@data-test-id="qualificationPeriod.endDate"]
-  ${value}=  Run Keyword If  'unit.code' in '${field_name}'  Log To Console   ${red}\n\t\t\t Це поле не виводиться на  tenderonline
+  ${value}=  Run Keyword If  'unit.code' in '${field_name}'  Log To Console   ${red}\n\t\t\t Це поле не виводиться на  GovAuction
   ...  ELSE IF  'qualifications' in '${field_name}'  Отримати інформацію із кваліфікації  ${username}  ${tender_uaid}  ${field_name}
   ...  ELSE IF  'awards' in '${field_name}'  Отримати інформацію із аварду  ${username}  ${tender_uaid}  ${field_name}
   ...  ELSE IF  'funders' in '${field_name}'  Get info from funders  ${username}  ${tender_uaid}  ${field_name}
   ...  ELSE IF  'unit' in '${field_name}'  Get Text  xpath=//*[@data-test-id="unit.name"]
-  ...  ELSE IF  'deliveryLocation' in '${field_name}'  Log To Console  ${red}\n\t\t\t Це поле не виводиться на  tenderonline
+  ...  ELSE IF  'deliveryLocation' in '${field_name}'  Log To Console  ${red}\n\t\t\t Це поле не виводиться на  GovAuction
   ...  ELSE IF  'items' in '${field_name}'  Get Text  xpath=(//*[@data-test-id="${field_name.replace('[${field_name.split('[')[1].split(']')[0]}]', '')}"])[${field_name.split('[')[1].split(']')[0]} + 1]
   ...  ELSE IF  'agreements' in '${field_name}'  Get Info From Agreements  ${username}  ${tender_uaid}  ${field_name}
 #  ...  ELSE IF  'contracts' in '${field_name}'  Get info from contracts  ${username}  ${tender_uaid}  ${field_name}
