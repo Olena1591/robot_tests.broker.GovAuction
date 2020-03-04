@@ -1967,9 +1967,9 @@ GovAuction.Пошук угоди по ідентифікатору
   ${url}=  Get Location
   Force Agreement Synchronization  ${url}
 
-Отримати доступ до угоди
-  [Arguments]  ${username}  ${agreement_uaid}
-  GovAuction.Пошук угоди по ідентифікатору  ${username}  ${agreement_uaid}
+#Отримати доступ до угоди
+#  [Arguments]  ${username}  ${agreement_uaid}
+#  GovAuction.Пошук угоди по ідентифікатору  ${username}  ${agreement_uaid}
 #  Wait Until Keyword Succeeds  10 x  1 s  Page Should Contain Element  xpath=//div[@class="col-xs-12 text-center"]/descendant::button[contains(text(),"Оголосити відбір для закупівлі за рамковою угодою")]
 
 Внести зміну в угоду
