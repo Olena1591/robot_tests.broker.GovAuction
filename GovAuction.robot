@@ -1217,7 +1217,7 @@ GovAuction.Створити скаргу про виправлення визн�
 
 Отримати інформацію із тендера
   [Arguments]  ${username}  ${tender_uaid}  ${field_name}
-#  GovAuction.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+#  tenderonline.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${red}=  Evaluate  "\\033[1;31m"
 
   Run Keyword If  'title' in '${field_name}'  Execute Javascript  $("[data-test-id|='title']").css("text-transform", "unset")
@@ -1225,14 +1225,14 @@ GovAuction.Створити скаргу про виправлення визн�
   Run Keyword If  'status' in '${field_name}' and '${mode}' != 'negotiation'  Дочекатися І Клікнути  xpath=//*[contains(@href,"tender/json/")]
 #  Run Keyword And Ignore Error  Click Element  xpath=//button[@data-dismiss="modal"]
   Run Keyword If  '${field_name}' == 'qualificationPeriod.endDate'  Wait Until Keyword Succeeds  10 x  60 s  Run Keywords
-  ...  GovAuction.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ...  tenderonline.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ...  AND  Page Should Contain Element  xpath=//*[@data-test-id="qualificationPeriod.endDate"]
-  ${value}=  Run Keyword If  'unit.code' in '${field_name}'  Log To Console   ${red}\n\t\t\t Це поле не виводиться на  GovAuction
+  ${value}=  Run Keyword If  'unit.code' in '${field_name}'  Log To Console   ${red}\n\t\t\t Це поле не виводиться на  tenderonline
   ...  ELSE IF  'qualifications' in '${field_name}'  Отримати інформацію із кваліфікації  ${username}  ${tender_uaid}  ${field_name}
   ...  ELSE IF  'awards' in '${field_name}'  Отримати інформацію із аварду  ${username}  ${tender_uaid}  ${field_name}
   ...  ELSE IF  'funders' in '${field_name}'  Get info from funders  ${username}  ${tender_uaid}  ${field_name}
   ...  ELSE IF  'unit' in '${field_name}'  Get Text  xpath=//*[@data-test-id="unit.name"]
-  ...  ELSE IF  'deliveryLocation' in '${field_name}'  Log To Console  ${red}\n\t\t\t Це поле не виводиться на  GovAuction
+  ...  ELSE IF  'deliveryLocation' in '${field_name}'  Log To Console  ${red}\n\t\t\t Це поле не виводиться на  tenderonline
   ...  ELSE IF  'items' in '${field_name}'  Get Text  xpath=(//*[@data-test-id="${field_name.replace('[${field_name.split('[')[1].split(']')[0]}]', '')}"])[${field_name.split('[')[1].split(']')[0]} + 1]
   ...  ELSE IF  'agreements' in '${field_name}'  Get Info From Agreements  ${username}  ${tender_uaid}  ${field_name}
 #  ...  ELSE IF  'contracts' in '${field_name}'  Get info from contracts  ${username}  ${tender_uaid}  ${field_name}
@@ -1243,12 +1243,16 @@ GovAuction.Створити скаргу про виправлення визн�
   ...  ELSE IF  'contracts' in '${field_name}'  Отримати статус контракта  ${username}  ${tender_uaid}  ${field_name}
   ...  ELSE IF  '${field_name}' == 'lots[0].minimalStepPercentage'  Get Text  xpath=//*[@data-test-id="minimalStepPercentage"]
   ...  ELSE IF  '${field_name}' == 'lots[0].yearlyPaymentsPercentageRange'  Get Text  xpath=//*[@data-test-id="yearlyPaymentsPercentageRange"]
+  ...  ELSE IF  '${field_name}' == 'lots[0].value.amount'  Get Text  xpath=//*[@data-test-id="lots.value.amount"]
+  ...  ELSE IF  '${field_name}' == 'lots[0].minimalStep.amount'  Get Text  xpath=//*[@data-test-id="lots.minimalStep.amount"]
+  ...  ELSE IF  '${field_name}' == 'lots[0].title' and '${mode}' == 'framework_selection'  Get Text  xpath=//*[@data-test-id="lots.title"]
   ...  ELSE IF   "stones" in "${field_name}"  Get Info From Tender Milestones  ${field_name}
   ...  ELSE IF   "fundingKind" in "${field_name}"  Get Text  xpath=//*[@data-test-id="fundingKind"]
   ...  ELSE IF   "clarificationsUntil" in "${field_name}"  Get Text  xpath=//*[@data-test-id="clarificationsUntil"]
   ...  ELSE  Get Text  xpath=//*[@data-test-id="${field_name}"]
   ${value}=  adapt_view_tender_data  ${value}  ${field_name}
   [Return]  ${value}
+
 
 Get Info From Tender Milestones
    [Arguments]  ${field_name}
