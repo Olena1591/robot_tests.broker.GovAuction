@@ -1551,6 +1551,7 @@ Get Info From Complaints
   Run Keyword If  '${mode}' == 'open_esco'  Add esco bid  ${bid}  ${number_of_lots}
   ...  ELSE IF  '${tender_name}' == 'Конкурентний діалог'  Add competitive_dialogue bid  ${bid}  ${number_of_lots}
   ...  ELSE IF  '${tender_name}' == 'Конкурентний діалог з публікацією англ. мовою'  Add competitive_dialogue bid  ${bid}  ${number_of_lots}
+  ...  ELSE IF  '${tender_name}' == 'Відбір для закупівлі за рамковою угодою'  Add framework_selection bid  ${bid}  ${number_of_lots}
   ...  ELSE  Add bid  ${bid}  ${number_of_lots}
 
 Add bid
@@ -1564,7 +1565,11 @@ Add competitive_dialogue bid
   :FOR  ${lot_index}  IN RANGE  ${number_of_lots}
   \  Select Checkbox  xpath=//input[@name="Bid[lotValues][${bid.data.lotValues[${lot_index}].relatedLot}][competitive_lot]"]
 
-
+Add framework_selection bid
+  [Arguments]  ${bid}  ${number_of_lots}
+#  :FOR  ${lot_index}  IN RANGE  ${number_of_lots}
+#  \  ConvToStr And Input Text  name=Bid[lotValues][${bid.data.lotValues[${lot_index}]}][value][amount]  ${bid.data.lotValues[${lot_index}].value.amount}
+  ConvToStr And Input Text  xpath=//input[contains(@name,"[value][amount]")]  ${bid.data.lotValues[${lot_index}].value.amount}
 
 Add esco bid
   [Arguments]  ${bid}  ${number_of_lots}
